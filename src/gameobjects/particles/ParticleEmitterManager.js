@@ -48,106 +48,101 @@ var ParticleEmitterManager = new Class({
 
     initialize:
 
-    //  frame is optional and can contain the emitters array or object if skipped
-    function ParticleEmitterManager (scene, texture, frame, emitters)
-    {
-        GameObject.call(this, scene, 'ParticleEmitterManager');
-
-        /**
-         * The blend mode applied to all emitters and particles.
-         *
-         * @name Phaser.GameObjects.Particles.ParticleEmitterManager#blendMode
-         * @type {integer}
-         * @default -1
-         * @private
-         * @since 3.0.0
-         */
-        this.blendMode = -1;
-
-        /**
-         * The time scale applied to all emitters and particles, affecting flow rate, lifespan, and movement.
-         * Values larger than 1 are faster than normal.
-         * This is multiplied with any timeScale set on each individual emitter.
-         *
-         * @name Phaser.GameObjects.Particles.ParticleEmitterManager#timeScale
-         * @type {number}
-         * @default 1
-         * @since 3.0.0
-         */
-        this.timeScale = 1;
-
-        /**
-         * The texture used to render this Emitter Manager's particles.
-         *
-         * @name Phaser.GameObjects.Particles.ParticleEmitterManager#texture
-         * @type {Phaser.Textures.Texture}
-         * @default null
-         * @since 3.0.0
-         */
-        this.texture = null;
-
-        /**
-         * The texture frame used to render this Emitter Manager's particles.
-         *
-         * @name Phaser.GameObjects.Particles.ParticleEmitterManager#frame
-         * @type {Phaser.Textures.Frame}
-         * @default null
-         * @since 3.0.0
-         */
-        this.frame = null;
-
-        /**
-         * Names of this Emitter Manager's texture frames.
-         *
-         * @name Phaser.GameObjects.Particles.ParticleEmitterManager#frameNames
-         * @type {string[]}
-         * @since 3.0.0
-         */
-        this.frameNames = [];
-
         //  frame is optional and can contain the emitters array or object if skipped
-        if (frame !== null && (typeof frame === 'object' || Array.isArray(frame)))
-        {
-            emitters = frame;
-            frame = null;
-        }
+        function ParticleEmitterManager(scene, texture, frame, emitters) {
+            GameObject.call(this, scene, 'ParticleEmitterManager');
 
-        this.setTexture(texture, frame);
+            /**
+             * The blend mode applied to all emitters and particles.
+             *
+             * @name Phaser.GameObjects.Particles.ParticleEmitterManager#blendMode
+             * @type {integer}
+             * @default -1
+             * @private
+             * @since 3.0.0
+             */
+            this.blendMode = -1;
 
-        this.initPipeline();
+            /**
+             * The time scale applied to all emitters and particles, affecting flow rate, lifespan, and movement.
+             * Values larger than 1 are faster than normal.
+             * This is multiplied with any timeScale set on each individual emitter.
+             *
+             * @name Phaser.GameObjects.Particles.ParticleEmitterManager#timeScale
+             * @type {number}
+             * @default 1
+             * @since 3.0.0
+             */
+            this.timeScale = 1;
 
-        /**
-         * A list of Emitters being managed by this Emitter Manager.
-         *
-         * @name Phaser.GameObjects.Particles.ParticleEmitterManager#emitters
-         * @type {Phaser.Structs.List.<Phaser.GameObjects.Particles.ParticleEmitter>}
-         * @since 3.0.0
-         */
-        this.emitters = new List(this);
+            /**
+             * The texture used to render this Emitter Manager's particles.
+             *
+             * @name Phaser.GameObjects.Particles.ParticleEmitterManager#texture
+             * @type {Phaser.Textures.Texture}
+             * @default null
+             * @since 3.0.0
+             */
+            this.texture = null;
 
-        /**
-         * A list of Gravity Wells being managed by this Emitter Manager.
-         *
-         * @name Phaser.GameObjects.Particles.ParticleEmitterManager#wells
-         * @type {Phaser.Structs.List.<Phaser.GameObjects.Particles.GravityWell>}
-         * @since 3.0.0
-         */
-        this.wells = new List(this);
+            /**
+             * The texture frame used to render this Emitter Manager's particles.
+             *
+             * @name Phaser.GameObjects.Particles.ParticleEmitterManager#frame
+             * @type {Phaser.Textures.Frame}
+             * @default null
+             * @since 3.0.0
+             */
+            this.frame = null;
 
-        if (emitters)
-        {
-            //  An array of emitter configs?
-            if (!Array.isArray(emitters))
-            {
-                emitters = [ emitters ];
+            /**
+             * Names of this Emitter Manager's texture frames.
+             *
+             * @name Phaser.GameObjects.Particles.ParticleEmitterManager#frameNames
+             * @type {string[]}
+             * @since 3.0.0
+             */
+            this.frameNames = [];
+
+            //  frame is optional and can contain the emitters array or object if skipped
+            if (frame !== null && (typeof frame === 'object' || Array.isArray(frame))) {
+                emitters = frame;
+                frame = null;
             }
 
-            for (var i = 0; i < emitters.length; i++)
-            {
-                this.createEmitter(emitters[i]);
+            this.setTexture(texture, frame);
+
+            this.initPipeline();
+
+            /**
+             * A list of Emitters being managed by this Emitter Manager.
+             *
+             * @name Phaser.GameObjects.Particles.ParticleEmitterManager#emitters
+             * @type {Phaser.Structs.List.<Phaser.GameObjects.Particles.ParticleEmitter>}
+             * @since 3.0.0
+             */
+            this.emitters = new List(this);
+
+            /**
+             * A list of Gravity Wells being managed by this Emitter Manager.
+             *
+             * @name Phaser.GameObjects.Particles.ParticleEmitterManager#wells
+             * @type {Phaser.Structs.List.<Phaser.GameObjects.Particles.GravityWell>}
+             * @since 3.0.0
+             */
+            this.wells = new List(this);
+
+            if (emitters) {
+                //  An array of emitter configs?
+                if (!Array.isArray(emitters)) {
+                    emitters = [emitters];
+                }
+
+                for (var i = 0; i < emitters.length; i++) {
+                    this.createEmitter(emitters[i]);
+                }
             }
-        }
-    },
+        },
 
     /**
      * Sets the texture and frame this Emitter Manager will use to render with.
@@ -162,8 +157,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {this} This Emitter Manager.
      */
-    setTexture: function (key, frame)
-    {
+    setTexture: function (key, frame) {
         this.texture = this.scene.sys.textures.get(key);
 
         return this.setFrame(frame);
@@ -183,16 +177,14 @@ var ParticleEmitterManager = new Class({
      *
      * @return {this} This Emitter Manager.
      */
-    setFrame: function (frame)
-    {
+    setFrame: function (frame) {
         this.frame = this.texture.get(frame);
 
-        var frames = this.texture.getFramesFromTextureSource(this.frame.sourceIndex);
+        var frames = this.texture.getFrameNames();
 
         var names = [];
 
-        frames.forEach(function (sourceFrame)
-        {
+        frames.forEach(function (sourceFrame) {
             names.push(sourceFrame.name);
         });
 
@@ -214,33 +206,26 @@ var ParticleEmitterManager = new Class({
      *
      * @return {this} This Emitter Manager.
      */
-    setEmitterFrames: function (frames, emitter)
-    {
-        if (!Array.isArray(frames))
-        {
-            frames = [ frames ];
+    setEmitterFrames: function (frames, emitter) {
+        if (!Array.isArray(frames)) {
+            frames = [frames];
         }
 
         var out = emitter.frames;
 
         out.length = 0;
 
-        for (var i = 0; i < frames.length; i++)
-        {
+        for (var i = 0; i < frames.length; i++) {
             var frame = frames[i];
 
-            if (this.frameNames.indexOf(frame) !== -1)
-            {
+            if (this.frameNames.indexOf(frame) !== -1) {
                 out.push(this.texture.get(frame));
             }
         }
 
-        if (out.length > 0)
-        {
+        if (out.length > 0) {
             emitter.defaultFrame = out[0];
-        }
-        else
-        {
+        } else {
             emitter.defaultFrame = this.defaultFrame;
         }
 
@@ -257,8 +242,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {Phaser.GameObjects.Particles.ParticleEmitter} The Particle Emitter that was added to this Emitter Manager.
      */
-    addEmitter: function (emitter)
-    {
+    addEmitter: function (emitter) {
         return this.emitters.add(emitter);
     },
 
@@ -272,8 +256,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {Phaser.GameObjects.Particles.ParticleEmitter} The Particle Emitter that was created.
      */
-    createEmitter: function (config)
-    {
+    createEmitter: function (config) {
         return this.addEmitter(new ParticleEmitter(this, config));
     },
 
@@ -287,8 +270,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {?Phaser.GameObjects.Particles.ParticleEmitter} The Particle Emitter if it was removed or null if it was not.
      */
-    removeEmitter: function (emitter)
-    {
+    removeEmitter: function (emitter) {
         return this.emitters.remove(emitter, true);
     },
 
@@ -302,8 +284,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {Phaser.GameObjects.Particles.GravityWell} The Gravity Well that was added to this Emitter Manager.
      */
-    addGravityWell: function (well)
-    {
+    addGravityWell: function (well) {
         return this.wells.add(well);
     },
 
@@ -317,8 +298,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {Phaser.GameObjects.Particles.GravityWell} The Gravity Well that was created.
      */
-    createGravityWell: function (config)
-    {
+    createGravityWell: function (config) {
         return this.addGravityWell(new GravityWell(config));
     },
 
@@ -334,16 +314,13 @@ var ParticleEmitterManager = new Class({
      *
      * @return {this} This Emitter Manager.
      */
-    emitParticle: function (count, x, y)
-    {
+    emitParticle: function (count, x, y) {
         var emitters = this.emitters.list;
 
-        for (var i = 0; i < emitters.length; i++)
-        {
+        for (var i = 0; i < emitters.length; i++) {
             var emitter = emitters[i];
 
-            if (emitter.active)
-            {
+            if (emitter.active) {
                 emitter.emitParticle(count, x, y);
             }
         }
@@ -363,8 +340,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {this} This Emitter Manager.
      */
-    emitParticleAt: function (x, y, count)
-    {
+    emitParticleAt: function (x, y, count) {
         return this.emitParticle(count, x, y);
     },
 
@@ -380,8 +356,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {this} This Emitter Manager.
      */
-    pause: function ()
-    {
+    pause: function () {
         this.active = false;
 
         return this;
@@ -395,8 +370,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {this} This Emitter Manager.
      */
-    resume: function ()
-    {
+    resume: function () {
         this.active = true;
 
         return this;
@@ -410,8 +384,7 @@ var ParticleEmitterManager = new Class({
      *
      * @return {Phaser.GameObjects.Particles.GravityWell[]} - The active gravity wells.
      */
-    getProcessors: function ()
-    {
+    getProcessors: function () {
         return this.wells.getAll('active', true);
     },
 
@@ -424,19 +397,16 @@ var ParticleEmitterManager = new Class({
      * @param {integer} time - The current timestamp as generated by the Request Animation Frame or SetTimeout.
      * @param {number} delta - The delta time, in ms, elapsed since the last frame.
      */
-    preUpdate: function (time, delta)
-    {
+    preUpdate: function (time, delta) {
         //  Scale the delta
         delta *= this.timeScale;
 
         var emitters = this.emitters.list;
 
-        for (var i = 0; i < emitters.length; i++)
-        {
+        for (var i = 0; i < emitters.length; i++) {
             var emitter = emitters[i];
 
-            if (emitter.active)
-            {
+            if (emitter.active) {
                 emitter.preUpdate(time, delta);
             }
         }
@@ -450,9 +420,7 @@ var ParticleEmitterManager = new Class({
      * @private
      * @since 3.10.0
      */
-    setAlpha: function ()
-    {
-    },
+    setAlpha: function () {},
 
     /**
      * A NOOP method so you can pass an EmitterManager to a Container.
@@ -462,9 +430,7 @@ var ParticleEmitterManager = new Class({
      * @private
      * @since 3.10.0
      */
-    setScrollFactor: function ()
-    {
-    },
+    setScrollFactor: function () {},
 
     /**
      * A NOOP method so you can pass an EmitterManager to a Container.
@@ -474,9 +440,7 @@ var ParticleEmitterManager = new Class({
      * @private
      * @since 3.15.0
      */
-    setBlendMode: function ()
-    {
-    }
+    setBlendMode: function () {}
 
 });
 
